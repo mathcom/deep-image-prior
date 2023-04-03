@@ -1,17 +1,18 @@
-name: deep-image-prior
+name: DIP
 channels:
-- pytorch
-- defaults
+  - defaults
 dependencies:
-- jupyter
-- nb_conda
-- numpy
-- pyyaml
-- mkl
-- setuptools
-- cmake
-- cffi
-- pytorch=0.4
-- matplotlib
-- scikit-image
-- torchvision
+  - python=3.6.13
+  - nb_conda=2.2.1
+  - numpy=1.15.4
+  - pyyaml=5.4.1
+  - mkl=2018.0.3
+  - cmake=3.22.1
+  - cffi=1.14.6
+  - pytorch::cuda92=1.0
+  - pytorch=0.4.1
+  - scikit-image=0.16.2
+  - torchvision=0.2.1
+  - jupyter
+  - setuptools
+  - matplotlib
