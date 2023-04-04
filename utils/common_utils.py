@@ -52,14 +52,16 @@ def get_params(opt_over, net, net_input, downsampler=None):
             
     return params
 
-def get_image_grid(images_np, nrow=8):
+def get_image_grid(images_np, nrow=8, dtype=None):
     '''Creates a grid from a list of images by concatenating them.'''
     images_torch = [torch.from_numpy(x) for x in images_np]
+    if dtype:
+        images_torch = [img.type(dtype) for img in images_torch]
     torch_grid = torchvision.utils.make_grid(images_torch, nrow)
     
-    return torch_grid.numpy()
+    return torch_grid.cpu().numpy()
 
-def plot_image_grid(images_np, nrow =8, factor=1, interpolation='lanczos'):
+def plot_image_grid(images_np, nrow =8, factor=1, interpolation='lanczos', dtype=None):
     """Draws images in a grid
     
     Args:
@@ -73,7 +75,7 @@ def plot_image_grid(images_np, nrow =8, factor=1, interpolation='lanczos'):
     
     images_np = [x if (x.shape[0] == n_channels) else np.concatenate([x, x, x], axis=0) for x in images_np]
 
-    grid = get_image_grid(images_np, nrow)
+    grid = get_image_grid(images_np, nrow, dtype)
     
     plt.figure(figsize=(len(images_np) + factor, 12 + factor))
     
@@ -99,6 +101,9 @@ def get_image(path, imsize=-1):
         imsize: tuple or scalar with dimensions; -1 for `no resize`
     """
     img = load(path)
+    
+    if img.mode != 'RGB':
+        img = img.convert('RGB')
 
     if isinstance(imsize, int):
         imsize = (imsize, imsize)
